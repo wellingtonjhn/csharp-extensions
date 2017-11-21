@@ -51,7 +51,7 @@ Task("Push-Nuget-Package")
 .IsDependentOn("Create-Nuget-Package")
 .Does(() =>
 {
-    var apiKey = "b5819ebc-3fd4-4e98-b391-665f36aff91e"; //EnvironmentVariable("apiKey");
+    var apiKey = "ff1b7936-7034-4b00-bc79-f7f632839dc7"; //EnvironmentVariable("apiKey");
     
     foreach (var package in GetFiles($"{artifactsDirectory}/*.nupkg"))
     {
