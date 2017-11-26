@@ -41,7 +41,7 @@ Task("Create-Nuget-Package")
 .WithCriteria(ShouldRunRelease())
 .Does(() =>
 {
-    var revision = AppVeyor.Environment.Build.Number.ToString("D4");
+    var revision = AppVeyor.Environment.Build.Number.ToString();
 
     foreach (var project in GetFiles("./src/**/*.csproj"))
     {
