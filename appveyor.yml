@@ -1,0 +1,14 @@
+version: '{build}'
+pull_requests:
+  do_not_increment_build_number: true
+environment:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  NUGET_API_KEY:
+    secure: hQ5LogWZGZTKK4u/AlC/X4ThwiCq0JbYNxuOCVMFWzRJwH8VSYHuVry/At69M1kH
+build_script:
+- ps: .\build.ps1
+test: off
+artifacts:
+- path: .\artifacts\**\*.nupkg
+  name: NuGet
