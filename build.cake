@@ -2,11 +2,6 @@ var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var artifactsDirectory = MakeAbsolute(Directory("./artifacts"));
 
-Setup(context =>
-{
-     CleanDirectory(artifactsDirectory);
-});
-
 Task("Build")
 .Does(() =>
 {
@@ -38,11 +33,8 @@ Task("Test")
 
 Task("Create-Nuget-Package")
 .IsDependentOn("Test")
-.WithCriteria(ShouldRunRelease())
 .Does(() =>
 {
-    var revision = AppVeyor.Environment.Build.Number.ToString("D4");
-
     foreach (var project in GetFiles("./src/**/*.csproj"))
     {
         DotNetCorePack(
@@ -50,18 +42,16 @@ Task("Create-Nuget-Package")
             new DotNetCorePackSettings()
             {
                 Configuration = configuration,
-                OutputDirectory = artifactsDirectory,
-                VersionSuffix = revision
+                OutputDirectory = artifactsDirectory
             });
     }
 });
 
 Task("Push-Nuget-Package")
 .IsDependentOn("Create-Nuget-Package")
-.WithCriteria(ShouldRunRelease())
 .Does(() =>
 {
-    var apiKey = EnvironmentVariable("NUGET_API_KEY");
+    var apiKey = "ff1b7936-7034-4b00-bc79-f7f632839dc7"; //EnvironmentVariable("apiKey");
     
     foreach (var package in GetFiles($"{artifactsDirectory}/*.nupkg"))
     {
@@ -76,5 +66,3 @@ Task("Push-Nuget-Package")
 Task("Default").IsDependentOn("Push-Nuget-Package");
 
 RunTarget(target);
-
-private bool ShouldRunRelease() => AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag;
