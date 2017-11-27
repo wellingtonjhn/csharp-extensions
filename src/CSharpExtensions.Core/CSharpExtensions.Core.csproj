@@ -3,9 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Wellington Nascimento</Authors>
-    <Description>Projeto de exemplo</Description>
-    <RepositoryUrl>https://github.com/wellingtonjhn/csharp-extensions</RepositoryUrl>
+    <Description>Projeto de exemplo para uma série de artigos sobre automação com Cake e .Net Core (não deve ser usado em produção)</Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <PackageProjectUrl>https://github.com/wellingtonjhn/csharp-extensions</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/wellingtonjhn/csharp-extensions/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/wellingtonjhn/csharp-extensions.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>dotnet core cake demo</PackageTags>
+    <Version>$(SemVer)</Version>
   </PropertyGroup>
 
 </Project>
