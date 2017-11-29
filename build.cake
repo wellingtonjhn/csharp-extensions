@@ -1,4 +1,7 @@
 #tool "nuget:?package=GitVersion.CommandLine"
+#addin nuget:?package=Newtonsoft.Json
+
+using Newtonsoft.Json;
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -12,9 +15,7 @@ Setup(context =>
 Task("Build")
 .Does(() =>
 {
-    var versionInfo = GitVersion(new GitVersionSettings {
-        RepositoryPath = "."
-    });
+    var version = GetVersion();
 
     foreach(var project in GetFiles("./src/**/*.csproj"))
     {
@@ -23,7 +24,7 @@ Task("Build")
             new DotNetCoreBuildSettings()
             {
                 Configuration = configuration,
-                ArgumentCustomization = args => args.Append($"/p:SemVer={versionInfo.NuGetVersionV2}")
+                ArgumentCustomization = args => args.Append($"/p:SemVer={version}")
             });
     }
 });
@@ -76,3 +77,20 @@ Task("Default")
 RunTarget(target);
 
 private bool ShouldRunRelease() => AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag;
+
+private string GetVersion()
+{
+    var gitVersion = GitVersion(new GitVersionSettings {
+        RepositoryPath = "."
+    });
+
+    Information($"Git Semantic Version: {JsonConvert.SerializeObject(gitVersion)}");
+    
+    var build = AppVeyor.IsRunningOnAppVeyor ? $"+build.{AppVeyor.Environment.Build.Number.ToString()}" : string.Empty;
+
+    var version = gitVersion.SemVer + build;
+
+    Information($"Version: {version}");
+
+    return version;
+}
