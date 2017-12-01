@@ -24,7 +24,6 @@ Task("Build")
             new DotNetCoreBuildSettings()
             {
                 Configuration = configuration,
-                Target = 
                 ArgumentCustomization = args => args.Append($"/p:SemVer={version}")
             });
     }
