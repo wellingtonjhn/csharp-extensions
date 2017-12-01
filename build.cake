@@ -24,6 +24,7 @@ Task("Build")
             new DotNetCoreBuildSettings()
             {
                 Configuration = configuration,
+                Target = 
                 ArgumentCustomization = args => args.Append($"/p:SemVer={version}")
             });
     }
@@ -44,7 +45,7 @@ Task("Test")
     }
 });
 
-Task("Move-Nuget-Package")
+Task("Move-Package-Artifacts")
 .IsDependentOn("Build")
 .WithCriteria(ShouldRunRelease())
 .Does(() =>
@@ -54,7 +55,7 @@ Task("Move-Nuget-Package")
 });
 
 Task("Push-Nuget-Package")
-.IsDependentOn("Move-Nuget-Package")
+.IsDependentOn("Move-Package-Artifacts")
 .WithCriteria(ShouldRunRelease())
 .Does(() =>
 {
@@ -86,11 +87,5 @@ private string GetVersion()
 
     Information($"Git Semantic Version: {JsonConvert.SerializeObject(gitVersion)}");
     
-    var build = AppVeyor.IsRunningOnAppVeyor ? $"+build.{AppVeyor.Environment.Build.Number.ToString()}" : string.Empty;
-
-    var version = gitVersion.SemVer + build;
-
-    Information($"Version: {version}");
-
-    return version;
+    return gitVersion.NuGetVersionV2;
 }

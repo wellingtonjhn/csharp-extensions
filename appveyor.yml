@@ -10,5 +10,5 @@ build_script:
 - ps: .\build.ps1
 test: off
 artifacts:
-- path: .\artifacts\**\*.nupkg
+- path: .\artifacts\*.nupkg
   name: NuGet
