@@ -15,16 +15,13 @@ Setup(context =>
 Task("Build")
 .Does(() =>
 {
-    var version = GetVersion();
-
     foreach(var project in GetFiles("./src/**/*.csproj"))
     {
         DotNetCoreBuild(
             project.GetDirectory().FullPath, 
             new DotNetCoreBuildSettings()
             {
-                Configuration = configuration,
-                ArgumentCustomization = args => args.Append($"/p:SemVer={version}")
+                Configuration = configuration
             });
     }
 });
@@ -44,17 +41,29 @@ Task("Test")
     }
 });
 
-Task("Move-Package-Artifacts")
-.IsDependentOn("Build")
+Task("Create-Nuget-Package")
+.IsDependentOn("Test")
 .WithCriteria(ShouldRunRelease())
 .Does(() =>
 {
-    var files = GetFiles("./src/**/*.nupkg");
-    CopyFiles(files, artifactsDirectory);
+    var version = GetPackageVersion();
+
+    foreach (var project in GetFiles("./src/**/*.csproj"))
+    {
+        DotNetCorePack(
+            project.GetDirectory().FullPath,
+            new DotNetCorePackSettings()
+            {
+               
+                Configuration = configuration,
+                OutputDirectory = artifactsDirectory,
+                ArgumentCustomization = args => args.Append($"/p:Version={version}")
+            });
+    }
 });
 
 Task("Push-Nuget-Package")
-.IsDependentOn("Move-Package-Artifacts")
+.IsDependentOn("Create-Nuget-Package")
 .WithCriteria(ShouldRunRelease())
 .Does(() =>
 {
@@ -71,14 +80,13 @@ Task("Push-Nuget-Package")
 });
 
 Task("Default")
-    .IsDependentOn("Test")
     .IsDependentOn("Push-Nuget-Package");
 
 RunTarget(target);
 
 private bool ShouldRunRelease() => AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Tag.IsTag;
 
-private string GetVersion()
+private string GetPackageVersion()
 {
     var gitVersion = GitVersion(new GitVersionSettings {
         RepositoryPath = "."
