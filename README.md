@@ -1,5 +1,10 @@
 # CSharp Extensions (demo)
 
+[![Travis](https://img.shields.io/travis/wellingtonjhn/csharp-extensions.svg?label=travis)](https://travis-ci.org/wellingtonjhn/csharp-extensions) 
+
+[![AppVeyor](https://img.shields.io/appveyor/ci/wellingtonjhn/csharp-extensions.svg?label=appveyor)](https://ci.appveyor.com/project/wellingtonjhn/csharp-extensions)
+
+
 Esse projeto tem como objetivo servir de referência para a série de artigos sobre automação com Cake e .Net Core.
 
 O código para cada artigo está dividido em uma branch específica, pois a intenção nessa série é evoluir de um modelo mais básico de automação, para algo mais elaborado. 
