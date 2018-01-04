@@ -11,4 +11,4 @@ Lembrando que a branch master conterá sempre a versão do artigo mais recente.
 | # | Artigo    | Branch            |
 |---| :----------|-------------------|
 | 1 | [Automatizando tarefas de build, teste e deploy de pacotes Nuget com Cake e .Net Core](https://medium.com/@wellingtonjhn/automatizando-tarefas-de-build-teste-e-deploy-de-pacotes-nuget-com-cake-6f23b9f974e7) | [initial-cake](https://github.com/wellingtonjhn/csharp-extensions/tree/initial-cake) |
-| 2 | CI/CD com Travis e AppVeyor usando Cake e .Net Core | [cicd-cake](https://github.com/wellingtonjhn/csharp-extensions/tree/cicd-cake) |
+| 2 | [CI/CD com Travis e AppVeyor usando Cake e .Net Core](https://medium.com/@wellingtonjhn/ci-cd-com-travis-e-appveyor-usando-cake-e-net-core-eb7f3f51277c) | [cicd-cake](https://github.com/wellingtonjhn/csharp-extensions/tree/cicd-cake) |
